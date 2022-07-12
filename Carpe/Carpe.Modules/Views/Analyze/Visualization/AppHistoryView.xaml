@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="Carpe.Modules.Views.Analyze.Visualization.AppHistoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Carpe.Modules.Views.Analyze.Visualization"
+             xmlns:converters="clr-namespace:Carpe.Modules.Converters"
+             xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts" 
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <dxc:ChartControl Grid.Row="0" x:Name="AppHistoryGraph">
+            <dxmvvm:Interaction.Behaviors>
+                <dxmvvm:EventToCommand EventName="MouseDoubleClick" PassEventArgsToCommand="True" SourceName="AppHistoryGraph" EventArgsConverter="{converters:ChartDoubleClickEventConverter}" Command="{Binding ChartDoubleClickCommand}"/>
+            </dxmvvm:Interaction.Behaviors>
+            <dxc:ChartControl.Diagram>
+                <dxc:XYDiagram2D>
+                    <dxc:XYDiagram2D.AxisX>
+                        <dxc:AxisX2D>
+                            <dxc:AxisX2D.DateTimeScaleOptions>
+                                <dxc:AutomaticDateTimeScaleOptions AggregateFunction="Sum"/>
+                            </dxc:AxisX2D.DateTimeScaleOptions>
+                        </dxc:AxisX2D>
+                    </dxc:XYDiagram2D.AxisX>
+                    <dxc:LineSeries2D DataSource="{Binding FilesData}"
+                                      ArgumentDataMember="Argument"
+                                      ArgumentScaleType="Auto"       
+                                      ValueDataMember="Value"                                  
+                                      MarkerVisible="True">
+                    </dxc:LineSeries2D>
+                </dxc:XYDiagram2D>
+            </dxc:ChartControl.Diagram>
+        </dxc:ChartControl>
+        <dxg:GridControl Grid.Row="1" DataSource="{Binding ShownDT}"  ShowBorder="False" AutoGenerateColumns="AddNew">
+            <dxg:GridControl.View>
+                <dxg:TableView AllowEditing="False" ShowGroupPanel="False"/>
+            </dxg:GridControl.View>
+        </dxg:GridControl>
+    </Grid>
+</UserControl>

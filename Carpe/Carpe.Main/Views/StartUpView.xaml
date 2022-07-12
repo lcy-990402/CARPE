@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="Carpe.Main.Views.StartUpView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:Carpe.Main.ViewModels"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"                                                                             
+             xmlns:dxco="http://schemas.devexpress.com/winfx/2008/xaml/controls"
+             mc:Ignorable="d"
+             d:DesignHeight="500" d:DesignWidth="600"
+             d:DataContext="{dxmvvm:ViewModelSource Type={x:Type viewModels:StartUpViewModel}}">
+    <dxmvvm:Interaction.Behaviors>
+        <dx:DialogService x:Name="newCaseService">
+            <dx:DialogService.ViewTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <dxco:Wizard x:Name="wizard">
+                            <dxmvvm:Interaction.Behaviors>
+                                <dxco:WizardService>
+                                    <dxco:WizardService.PageGeneratorTemplate>
+                                        <DataTemplate>
+                                            <dxco:WizardPage ShowNext="{Binding ShowNext}" ShowBack="{Binding ShowBack}" ShowCancel="{Binding ShowCancel}" ShowFinish="{Binding ShowFinish}"
+                                                             AllowNext="{Binding AllowNext}" AllowBack="{Binding AllowBack}" AllowCancel="{Binding AllowCancel}" AllowFinish="{Binding AllowFinish}"/>
+                                        </DataTemplate>
+                                    </dxco:WizardService.PageGeneratorTemplate>
+                                </dxco:WizardService>
+                                <dx:DXMessageBoxService/>
+                                <dxmvvm:EventToCommand EventName="Loaded" Command="{Binding ViewLoadedCommand}"/>
+                            </dxmvvm:Interaction.Behaviors>
+                        </dxco:Wizard>
+                    </Grid>
+                </DataTemplate>
+            </dx:DialogService.ViewTemplate>
+            <dx:DialogService.DialogStyle>
+                <Style TargetType="dx:DXDialogWindow">
+                    <Setter Property="WindowStyle" Value="ToolWindow"/>
+                    <Setter Property="Width" Value="1000"/>
+                    <Setter Property="Height" Value="600"/>
+                </Style>
+            </dx:DialogService.DialogStyle>
+        </dx:DialogService>
+    </dxmvvm:Interaction.Behaviors>
+    <Grid>
+        <StackPanel Orientation="Vertical"
+                    HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Image Source="/Images/new_logo_carpe.png" Width="500"/>
+            <dx:SimpleButton Content="New Case" Width="150" Margin="0,50,0,0"
+                             Glyph="{dx:DXImage 'SvgImages/Actions/New.svg'}"
+                             Command="{Binding NewCaseCommand}"/>
+            <dx:SimpleButton Content="Open Case" Width="150" Margin="0,50,0,0"
+                             Glyph="{dx:DXImage 'SvgImages/Actions/Open.svg'}"
+                             Command="{Binding OpenCaseCommand}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

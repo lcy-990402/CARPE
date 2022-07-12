@@ -1,0 +1,72 @@
+﻿<UserControl x:Class="Carpe.Modules.Views.Analyze.OverView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Carpe.Modules.Views.Analyze" 
+             xmlns:viewModels="clr-namespace:Carpe.Modules.ViewModels.Analyze"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+             xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:DataContext="{dxmvvm:ViewModelSource viewModels:OverViewModel}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Border Grid.RowSpan="2" BorderThickness="1" BorderBrush="Black"
+                CornerRadius="10" Margin="20">
+            <StackPanel Margin="20">
+                <TextBlock Text="Partition Information" FontSize="20"/>
+                <dxg:GridControl Margin="10" MaxHeight="300"
+                                 DataSource="{Binding PartitionDT}" ShowBorder="False" AutoGenerateColumns="AddNew">
+                    <dxg:GridControl.View>
+                        <dxg:TableView AllowEditing="False" ShowGroupPanel="False"/>
+                    </dxg:GridControl.View>
+                </dxg:GridControl>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="0" Grid.Column="1"
+                BorderThickness="1" CornerRadius="10" BorderBrush="Black"
+                Margin="20">
+            <dxc:ChartControl Margin="10" BorderThickness="0">
+                <dxc:ChartControl.Titles>
+                    <dxc:Title Content="Files Ratio"/>
+                </dxc:ChartControl.Titles>
+                <dxc:SimpleDiagram2D>
+                    <dxc:PieSeries2D x:Name="Series" DisplayName="Files"
+                                     DataSource="{Binding Path=FilesData}"
+                                     ArgumentDataMember="Argument" ValueDataMember="Value"
+                                     LabelsVisibility="True" HoleRadiusPercent="50">
+                        <dxc:PieSeries2D.Label>
+                            <dxc:SeriesLabel TextPattern="{}{A} : {VP:P}"
+                                             dxc:PieSeries.LabelPosition="TwoColumns"/>
+                        </dxc:PieSeries2D.Label>
+                    </dxc:PieSeries2D>
+                </dxc:SimpleDiagram2D>
+            </dxc:ChartControl>
+        </Border>
+        <Border Grid.Row="1" Grid.Column="1"
+                BorderThickness="1" CornerRadius="10" BorderBrush="Black"
+                Margin="20">
+            <StackPanel Margin="20">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Margin" Value="0,10,0,0"/>
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock Text="Current Info" FontSize="20"/>
+                <TextBlock Text="{Binding CurrentInfo[0], StringFormat=Case Name : {0}}"/>
+                <TextBlock Text="{Binding CurrentInfo[1], StringFormat=Administrator : {0}}"/>
+                <TextBlock Text="{Binding CurrentInfo[2], StringFormat=Create Date : {0}}"/>
+                <TextBlock Text="{Binding CurrentInfo[3], StringFormat=Description : {0}}"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
